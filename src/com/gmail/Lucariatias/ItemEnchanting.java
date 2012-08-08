@@ -15,6 +15,10 @@ public class ItemEnchanting extends JavaPlugin {
 		saveConfig();
 		getLogger().info("Item ID has been set to " + this.getConfig().getInt("ItemID"));
 		getLogger().info("Item Multiplier has been set to " + this.getConfig().getInt("ItemMultiplier"));
+		if (this.getConfig().getInt("ItemMultiplier") < 0) {
+			getLogger().info("Item Multiplier is less than zero! Using flat rates!");
+			getLogger().info("Flat Rate has been set to " + this.getConfig().getInt("FlatRate"));
+		}
 	}
 	
 	public void onDisable(){
