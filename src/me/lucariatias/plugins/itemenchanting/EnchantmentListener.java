@@ -1,7 +1,10 @@
 package me.lucariatias.plugins.itemenchanting;
 
-import org.bukkit.ChatColor;
+import java.util.Iterator;
+import java.util.Set;
+
 import org.bukkit.Material;
+import org.bukkit.enchantments.Enchantment;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -10,8 +13,10 @@ import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class EnchantmentListener implements Listener {
+	
 	private ItemEnchanting plugin;
-    public EnchantmentListener(ItemEnchanting plugin){
+    
+	public EnchantmentListener(ItemEnchanting plugin){
         this.plugin = plugin;
     }
 	
@@ -20,23 +25,43 @@ public class EnchantmentListener implements Listener {
 		if (!event.isCancelled()) {
 			Player player = event.getEnchanter();
 			Inventory inventory = player.getInventory();
-			if (plugin.getConfig().getInt("ItemMultiplier") < 0) {
-				ItemStack itemstack = new ItemStack (Material.getMaterial(plugin.getConfig().getInt("ItemID")), plugin.getConfig().getInt("FlatRate"));
-				if (inventory.contains(plugin.getConfig().getInt("ItemID"), plugin.getConfig().getInt("FlatRate"))) {
-			        inventory.removeItem(itemstack);
-					event.setExpLevelCost(0);
-				} else {
-	                player.sendMessage(ChatColor.RED + "You do not have the required items! You need " + ChatColor.GOLD + plugin.getConfig().getInt("FlatRate") + Material.getMaterial(plugin.getConfig().getInt("ItemID")).toString() + ChatColor.RED + " to add this enchantment.");
-				    event.setCancelled(true);
+			Set<Enchantment> enchants = event.getEnchantsToAdd().keySet();
+			Iterator<Enchantment> enchantmentIterator = enchants.iterator();
+			
+			while (enchantmentIterator.hasNext()) {
+				Enchantment enchantmentType = enchantmentIterator.next();
+				String enchantmentName = enchantmentType.getName().toLowerCase();
+				Integer enchantmentLevel = event.getEnchantsToAdd().get(enchantmentType);
+				Material item = Material.getMaterial(plugin.getConfig().getString("enchantments." + enchantmentName + ".item-name"));
+				Integer numItems = 0;
+				String failMsg = plugin.getConfig().getString("enchantments." + enchantmentName + ".fail-message");
+				
+				switch (plugin.getConfig().getInt("enchantments." + enchantmentName + ".mode")) {
+					case 0:
+						//Flatrates
+						numItems = plugin.getConfig().getInt("enchantments." + enchantmentName + ".amount");
+						break;
+					case 1:
+						//Exp level multiplier
+						numItems = plugin.getConfig().getInt("enchantments." + enchantmentName + ".amount") * event.getExpLevelCost();
+						break;
+					case 2:
+						//Enchant level multiplier
+						numItems = plugin.getConfig().getInt("enchantments." + enchantmentName + ".amount") * event.getEnchantsToAdd().get(enchantmentType);
+						break;
+					default:
+						//When anything else is given
+						numItems = 0;
 				}
-			} else {
-				ItemStack itemstack = new ItemStack (Material.getMaterial(plugin.getConfig().getInt("ItemID")), event.getExpLevelCost() * plugin.getConfig().getInt("ItemMultiplier"));
-				if (inventory.contains(plugin.getConfig().getInt("ItemID"),event.getExpLevelCost() * plugin.getConfig().getInt("ItemMultiplier"))) {
-			        inventory.removeItem(itemstack);
+				
+				ItemStack cost = new ItemStack(item, numItems);
+				
+				if (inventory.contains(cost)) {
+					inventory.removeItem(cost);
 					event.setExpLevelCost(0);
 				} else {
-				    player.sendMessage(ChatColor.RED + "You do not have the required items! You need " + ChatColor.GOLD + event.getExpLevelCost() * plugin.getConfig().getInt("ItemMultiplier") + " " + Material.getMaterial(plugin.getConfig().getInt("ItemID")).toString() + "(s)" + ChatColor.RED + " to add this enchantment.");
-				    event.setCancelled(true);
+					player.sendMessage(failMsg.replaceAll("&", "¤").replaceAll("%item-amount%", numItems.toString()).replaceAll("%item-name%", item.toString().toLowerCase()).replaceAll("%player%", player.getName()).replaceAll("%enchantment-name%", enchantmentName).replaceAll("%enchantment-level%", enchantmentLevel.toString()));
+					event.getEnchantsToAdd().put(enchantmentType, 0);
 				}
 			}
 		}
