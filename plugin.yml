@@ -1,3 +1,14 @@
 name: ItemEnchanting
+author: Lucariatias
 main: me.lucariatias.plugins.itemenchanting.ItemEnchanting
 version: 1.3.0
+description: This plugin allows enchanting to be done with items rather than experience
+commands:
+    enchant:
+        description: Allows the user to enchant an item using items
+        usage: /<command> [enchantment] [level]
+        aliases: [enchantment, itemenchant, itemenchantment]
+permissions:
+    itemenchanting.command.enchant:
+        default: op
+        description: Allows the user to use commands to enchant items

@@ -27,6 +27,7 @@ public class EnchantmentListener implements Listener {
 			Inventory inventory = player.getInventory();
 			Set<Enchantment> enchants = event.getEnchantsToAdd().keySet();
 			Iterator<Enchantment> enchantmentIterator = enchants.iterator();
+			Boolean successful = false;
 			
 			while (enchantmentIterator.hasNext()) {
 				Enchantment enchantmentType = enchantmentIterator.next();
@@ -56,13 +57,22 @@ public class EnchantmentListener implements Listener {
 				
 				ItemStack cost = new ItemStack(item, numItems);
 				
-				if (inventory.contains(cost)) {
-					inventory.removeItem(cost);
-					event.setExpLevelCost(0);
-				} else {
-					player.sendMessage(failMsg.replaceAll("&", "¤").replaceAll("%item-amount%", numItems.toString()).replaceAll("%item-name%", item.toString().toLowerCase()).replaceAll("%player%", player.getName()).replaceAll("%enchantment-name%", enchantmentName).replaceAll("%enchantment-level%", enchantmentLevel.toString()));
-					event.getEnchantsToAdd().put(enchantmentType, 0);
+				if (enchantmentLevel > 0) {
+					if (inventory.contains(cost.getType(), cost.getAmount())) {
+						inventory.removeItem(cost);
+						player.sendMessage(plugin.getConfig().getString("messages.successful-enchant").replaceAll("&", "¤").replaceAll("%item-amount%", numItems.toString()).replaceAll("%item-name%", item.toString().toLowerCase()).replaceAll("%player%", player.getName()).replaceAll("%enchantment-name%", enchantmentName).replaceAll("%enchantment-level%", enchantmentLevel.toString()));
+						successful = true;
+					} else {
+						player.sendMessage(failMsg.replaceAll("&", "¤").replaceAll("%item-amount%", numItems.toString()).replaceAll("%item-name%", item.toString().toLowerCase()).replaceAll("%player%", player.getName()).replaceAll("%enchantment-name%", enchantmentName).replaceAll("%enchantment-level%", enchantmentLevel.toString()));
+						event.getEnchantsToAdd().put(enchantmentType, 0);
+					}
 				}
+			}
+			
+			if (!successful) {
+				event.setCancelled(true);
+			} else {
+				event.setExpLevelCost(0);
 			}
 		}
     }

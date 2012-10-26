@@ -6,7 +6,13 @@ public class ItemEnchanting extends JavaPlugin {
 	
 	public void onEnable() {
 		this.getLogger().info("ItemEnchanting has been enabled!");
-		this.getServer().getPluginManager().registerEvents(new EnchantmentListener(this), this);
+		if (this.getConfig().getBoolean("legacy.use-legacy-mode")) {
+			this.getServer().getPluginManager().registerEvents(new LegacyEnchantmentListener(this), this);
+			this.getCommand("enchant").setExecutor(new LegacyEnchantmentCommand(this));
+		} else {
+			this.getServer().getPluginManager().registerEvents(new EnchantmentListener(this), this);
+			this.getCommand("enchant").setExecutor(new EnchantmentCommand(this));
+		}
 		this.getConfig().options().copyDefaults(true);
 		this.saveConfig();
 	}

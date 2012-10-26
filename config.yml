@@ -1,7 +1,7 @@
 enchantments:
     arrow_damage:
         mode: 0
-        item-name: IRON_SWORD
+        item-name: IRON_INGOT
         amount: 1
         fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
     arrow_fire:
@@ -21,12 +21,12 @@ enchantments:
         fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
     damage_all:
         mode: 0
-        item-name: IRON_SWORD
+        item-name: IRON_INGOT
         amount: 5
         fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
     damage_arthropods:
         mode: 0
-        item-name: IRON_SWORD
+        item-name: IRON_INGOT
         amount: 1
         fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
     damage_undead:
@@ -104,3 +104,18 @@ enchantments:
         item-name: WATER_BUCKET
         amount: 1
         fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
+messages:
+    command: '&e==&a%command%&e=='
+    no-permission: '&4You do not have permission to do that. Permission node: %permission-node%'
+    incorrect-args: '&4Usage: %usage%'
+    invalid-enchantment: '&4Invalid enchantment name.'
+    invalid-level: '&4Invalid enchantment level.'
+    successful-enchant: '&aEnchantment successful! Used &b%item-amount% x %item-name% &aon &b%enchantment-name% %enchantment-level%'
+misc:
+    exp-level-for-command-enchant: 40
+legacy:
+    use-legacy-mode: false
+    use-flat-rate: false
+    amount: 1
+    item-name: EMERALD
+    fail-message: '&4You do not have the required items! You need &6%item-amount% %item-name%(s) &4to add this enchantment.'
