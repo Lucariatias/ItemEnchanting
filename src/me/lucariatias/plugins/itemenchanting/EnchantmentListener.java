@@ -21,7 +21,7 @@ public class EnchantmentListener implements Listener {
     }
 	
 	@EventHandler
-    public void onPlayerEnchant(EnchantItemEvent event) {
+	public void onPlayerEnchant(EnchantItemEvent event) {
 		if (!event.isCancelled()) {
 			Player player = event.getEnchanter();
 			Inventory inventory = player.getInventory();
