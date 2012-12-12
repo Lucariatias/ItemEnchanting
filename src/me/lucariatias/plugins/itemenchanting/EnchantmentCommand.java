@@ -19,7 +19,7 @@ public class EnchantmentCommand implements CommandExecutor {
 
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-		if (cmd.getName().equalsIgnoreCase("enchant")) {
+		if (cmd.getName().equalsIgnoreCase("itemenchant")) {
 			sender.sendMessage(plugin.getConfig().getString("messages.command").replaceAll("&", "¤").replaceAll("%command%", "/" + cmd.getName().toLowerCase()));
 			if (sender.hasPermission("itemenchanting.command.enchant")) {
 				if (args.length == 2) {
