@@ -1,121 +1,15 @@
-enchantments:
-    arrow_damage:
-        mode: 0
-        item-name: IRON_INGOT
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    arrow_fire:
-        mode: 2
-        item-name: FLINT_AND_STEEL
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    arrow_infinite:
-        mode: 0
-        item-name: ARROW
-        amount: 128
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    arrow_knockback:
-        mode: 1
-        item-name: ARROW
-        amount: 2
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    damage_all:
-        mode: 0
-        item-name: IRON_INGOT
-        amount: 5
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    damage_arthropods:
-        mode: 0
-        item-name: IRON_INGOT
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    damage_undead:
-        mode: 1
-        item-name: ROTTEN_FLESH
-        amount: 8
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    dig_speed:
-        mode: 1
-        item-name: DIRT
-        amount: 64
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    durability:
-        mode: 1
-        item-name: EMERALD
-        amount: 3
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    fire_aspect:
-        mode: 0
-        item-name: FLINT_AND_STEEL
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    knockback:
-        mode: 1
-        item-name: EMERALD
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    loot_bonus_blocks:
-        mode: 0
-        item-name: GOLD_NUGGET
-        amount: 30
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    loot_bonus_mobs:
-        mode: 0
-        item-name: GOLD_NUGGET
-        amount: 10
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    oxygen:
-        mode: 1
-        item-name: WATER_BUCKET
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    protection_environmental:
-        mode: 2
-        item-name: LOG
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    protection_explosions:
-        mode: 2
-        item-name: GOLD_INGOT
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    protection_fall:
-        mode: 2
-        item-name: IRON_INGOT
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    protection_fire:
-        mode: 1
-        item-name: FLINT_AND_STEEL
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    protection_projectile:
-        mode: 0
-        item-name: ARROW
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    silk_touch:
-        mode: 1
-        item-name: EMERALD
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
-    water_worker:
-        mode: 1
-        item-name: WATER_BUCKET
-        amount: 1
-        fail-message: '&4Adding the enchantment &b%enchantment-name% %enchantment-level% &4requires &b%item-amount% x %item-name%'
+enchantment-table:
+    mode: flat-rate
+    items:
+        EMERALD: 3
+        DIAMOND: 1
+enchantment-command:
+    mode: flat-rate
+    items:
+        EMERALD: 5
+        DIAMOND: 3
 messages:
-    command: '&e==&a%command%&e=='
-    no-permission: '&4You do not have permission to do that. Permission node: %permission-node%'
-    incorrect-args: '&4Usage: %usage%'
-    invalid-enchantment: '&4Invalid enchantment name.'
-    invalid-level: '&4Invalid enchantment level.'
-    successful-enchant: '&aEnchantment successful! Used &b%item-amount% x %item-name% &aon &b%enchantment-name% %enchantment-level%'
-misc:
-    exp-level-for-command-enchant: 40
-legacy:
-    use-legacy-mode: false
-    use-flat-rate: false
-    amount: 1
-    item-name: EMERALD
-    fail-message: '&4You do not have the required items! You need &6%item-amount% %item-name%(s) &4to add this enchantment.'
+    success: '&aSuccessfully enchanted &9%enchanted-item% &ausing:'
+    failure: '&cFailed to enchant &9%enchanted-item%&c, it requires:'
+    show-items: true
+    item-format: '&9%payment-amount% x %payment-item%'
