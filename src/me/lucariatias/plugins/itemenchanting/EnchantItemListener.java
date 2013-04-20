@@ -32,10 +32,10 @@ public class EnchantItemListener implements Listener {
 				for (String section : plugin.getConfig().getConfigurationSection("enchantment-table.items").getKeys(false)) {
 					if (mode.equalsIgnoreCase("flat-rate")) {
 						itemStacks = Arrays.copyOf(itemStacks, itemStacks.length + 1);
-						itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-table.items." + section));
+						itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-table.items." + section + ".amount"), (short) plugin.getConfig().getInt("enchantment-table.items." + section + ".data"));
 					} else if (mode.equalsIgnoreCase("multiply")) {
 						itemStacks = Arrays.copyOf(itemStacks, itemStacks.length + 1);
-						itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-table.items." + section) * event.getExpLevelCost());
+						itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-table.items." + section) * event.getExpLevelCost(), (short) plugin.getConfig().getInt("enchantment-table.items." + section + ".data"));
 					}
 				}
 				
@@ -74,7 +74,7 @@ public class EnchantItemListener implements Listener {
 	private Boolean inventoryContains(Inventory inventory, ItemStack... itemStacks) {
 		Boolean contains = true;
 		for (ItemStack itemStack : itemStacks) {
-			if (!inventory.contains(itemStack.getType(), itemStack.getAmount())) {
+			if (!inventory.containsAtLeast(itemStack, itemStack.getAmount())) {
 				contains = false;
 			}
 		}

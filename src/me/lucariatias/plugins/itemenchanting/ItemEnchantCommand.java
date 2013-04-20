@@ -32,14 +32,14 @@ public class ItemEnchantCommand implements CommandExecutor {
 						
 						//Items
 						ItemStack[] itemStacks = new ItemStack[]{};
-						String mode = plugin.getConfig().getString("enchantment-command.mode", "flat-rate");
+						String mode = plugin.getConfig().getString("enchantment-command.mode", "multiply");
 						for (String section : plugin.getConfig().getConfigurationSection("enchantment-command.items").getKeys(false)) {
 							if (mode.equalsIgnoreCase("flat-rate")) {
 								itemStacks = Arrays.copyOf(itemStacks, itemStacks.length + 1);
-								itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-command.items." + section));
+								itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-command.items." + section + ".amount"), (short) plugin.getConfig().getInt("enchantment-command.items." + section + ".data"));
 							} else if (mode.equalsIgnoreCase("multiply")) {
 								itemStacks = Arrays.copyOf(itemStacks, itemStacks.length + 1);
-								itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-command.items." + section) * level);
+								itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-command.items." + section + ".amount") * level, (short) plugin.getConfig().getInt("enchantment-command.items." + section + ".data"));
 							}
 						}
 						
@@ -93,7 +93,7 @@ public class ItemEnchantCommand implements CommandExecutor {
 	private Boolean inventoryContains(Inventory inventory, ItemStack... itemStacks) {
 		Boolean contains = true;
 		for (ItemStack itemStack : itemStacks) {
-			if (!inventory.contains(itemStack.getType(), itemStack.getAmount())) {
+			if (!inventory.containsAtLeast(itemStack, itemStack.getAmount())) {
 				contains = false;
 			}
 		}

@@ -1,6 +1,6 @@
 name: ItemEnchanting
 author: Lucariatias
-version: 2.0.0
+version: 2.1.0
 main: me.lucariatias.plugins.itemenchanting.ItemEnchanting
 description: Changes enchanting mechanics to use items rather than experience
 commands:

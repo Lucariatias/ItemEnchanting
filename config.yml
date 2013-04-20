@@ -1,13 +1,21 @@
 enchantment-table:
     mode: flat-rate
     items:
-        EMERALD: 3
-        DIAMOND: 1
+        EMERALD:
+            amount: 3
+            data: 0
+        DIAMOND:
+            amount: 1
+            data: 0
 enchantment-command:
-    mode: flat-rate
+    mode: multiply
     items:
-        EMERALD: 5
-        DIAMOND: 3
+        EMERALD:
+            amount: 5
+            data: 0
+        DIAMOND:
+            amount: 3
+            data: 0
 messages:
     success: '&aSuccessfully enchanted &9%enchanted-item% &ausing:'
     failure: '&cFailed to enchant &9%enchanted-item%&c, it requires:'
