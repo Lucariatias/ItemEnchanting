@@ -1,7 +1,6 @@
 package me.lucariatias.plugins.itemenchanting;
 
 import java.util.Arrays;
-
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.Command;
@@ -54,7 +53,11 @@ public class ItemEnchantCommand implements CommandExecutor {
 						
 						//Item management
 						if (this.inventoryContains(player.getInventory(), itemStacks)) {
-							player.getItemInHand().addEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
+							if (sender.hasPermission("itemenchanting.unsafe")) {
+								player.getItemInHand().addUnsafeEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
+							} else {
+								player.getItemInHand().addEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
+							}
 							player.getInventory().removeItem(itemStacks);
 							player.sendMessage(successMessage);
 							if (plugin.getConfig().getBoolean("messages.show-items", true)) {
