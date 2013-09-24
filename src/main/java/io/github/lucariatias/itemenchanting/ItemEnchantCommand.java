@@ -1,8 +1,9 @@
 package io.github.lucariatias.itemenchanting;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
+
 import org.bukkit.ChatColor;
-import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -19,6 +20,7 @@ public class ItemEnchantCommand implements CommandExecutor {
 		this.plugin = plugin;
 	}
 
+	@SuppressWarnings("unchecked")
 	@Override
 	public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
 		if (sender.hasPermission("itemenchanting.command.itemenchant")) {
@@ -28,37 +30,34 @@ public class ItemEnchantCommand implements CommandExecutor {
 					try {
 						Integer level = Integer.parseInt(args[1]);
 						Player player = (Player) sender;
-						
 						//Items
-						ItemStack[] itemStacks = new ItemStack[]{};
-						String mode = plugin.getConfig().getString("enchantment-command.mode", "multiply");
-						for (String section : plugin.getConfig().getConfigurationSection("enchantment-command.items").getKeys(false)) {
-							if (mode.equalsIgnoreCase("flat-rate")) {
-								itemStacks = Arrays.copyOf(itemStacks, itemStacks.length + 1);
-								itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-command.items." + section + ".amount"), (short) plugin.getConfig().getInt("enchantment-command.items." + section + ".data"));
-							} else if (mode.equalsIgnoreCase("multiply")) {
-								itemStacks = Arrays.copyOf(itemStacks, itemStacks.length + 1);
-								itemStacks[itemStacks.length - 1] = new ItemStack(Material.getMaterial(section), plugin.getConfig().getInt("enchantment-command.items." + section + ".amount") * level, (short) plugin.getConfig().getInt("enchantment-command.items." + section + ".data"));
+						List<ItemStack> items = new ArrayList<ItemStack>();
+						String mode = plugin.getConfig().getString("enchantment-command.mode", "flat-rate");
+						items.addAll((List<ItemStack>) plugin.getConfig().getList("enchantment-command.items"));
+						if (mode.equalsIgnoreCase("multiply")) {
+							for (ItemStack item : items) {
+								item.setAmount(item.getAmount() * level);
 							}
 						}
 						
 						//Messages
-						String successMessage = plugin.getConfig().getString("messages.success", "&aSuccessfully enchanted ??9%enchanted-item% &ausing:").replaceAll("%enchanted-item%", player.getItemInHand().getType().toString()).replaceAll("&", "??");
-						String failureMessage = plugin.getConfig().getString("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:").replaceAll("%enchanted-item%", player.getItemInHand().getType().toString()).replaceAll("&", "??");
-						String[] itemMessages = new String[]{};
-						for (ItemStack itemStack : itemStacks) {
-							itemMessages = Arrays.copyOf(itemMessages, itemMessages.length + 1);
-							itemMessages[itemMessages.length - 1] = plugin.getConfig().getString("messages.item-format", "&9%payment-amount% x %payment-item%").replaceAll("%payment-amount%", Integer.toString(itemStack.getAmount())).replaceAll("%payment-item%", itemStack.getType().toString()).replaceAll("&", "??");
+						String successMessage = plugin.getConfig().getString("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:").replace("%enchanted-item%", player.getItemInHand().getType().toString()).replace('&', ChatColor.COLOR_CHAR);
+						String failureMessage = plugin.getConfig().getString("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:").replace("%enchanted-item%", player.getItemInHand().getType().toString()).replace('&', ChatColor.COLOR_CHAR);
+						List<String> itemMessages = new ArrayList<String>();
+						for (ItemStack item : items) {
+							itemMessages.add(plugin.getConfig().getString("messages.item-format", "&9%payment-amount% x %payment-item%").replace("%payment-amount%", Integer.toString(item.getAmount())).replace("%payment-item%", item.getType().toString()).replace('&', ChatColor.COLOR_CHAR));
 						}
 						
 						//Item management
-						if (this.inventoryContains(player.getInventory(), itemStacks)) {
+						if (this.inventoryContains(player.getInventory(), items)) {
 							if (sender.hasPermission("itemenchanting.unsafe")) {
 								player.getItemInHand().addUnsafeEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
 							} else {
 								player.getItemInHand().addEnchantment(Enchantment.getByName(args[0].toUpperCase()), level);
 							}
-							player.getInventory().removeItem(itemStacks);
+							for (ItemStack item : items) {
+								player.getInventory().removeItem(item);
+							}
 							player.sendMessage(successMessage);
 							if (plugin.getConfig().getBoolean("messages.show-items", true)) {
 								for (String itemMessage : itemMessages) {
@@ -93,14 +92,13 @@ public class ItemEnchantCommand implements CommandExecutor {
 		return true;
 	}
 	
-	private Boolean inventoryContains(Inventory inventory, ItemStack... itemStacks) {
-		Boolean contains = true;
-		for (ItemStack itemStack : itemStacks) {
+	private boolean inventoryContains(Inventory inventory, List<ItemStack> items) {
+		for (ItemStack itemStack : items) {
 			if (!inventory.containsAtLeast(itemStack, itemStack.getAmount())) {
-				contains = false;
+				return false;
 			}
 		}
-		return contains;
+		return true;
 	}
 
 }
