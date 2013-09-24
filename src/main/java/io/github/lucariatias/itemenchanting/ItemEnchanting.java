@@ -21,7 +21,7 @@ public class ItemEnchanting extends JavaPlugin {
 			this.createConfig();
 		}
 		YamlConfiguration lastUpdateConfig = new YamlConfiguration();
-		File lastUpdateFile = new File(this.getDataFolder().getPath() + File.separator + "last-update");
+		File lastUpdateFile = new File(this.getDataFolder().getPath() + File.separator + "last-update.yml");
 		if (!lastUpdateFile.exists()) {
 			this.createConfig();
 			lastUpdateConfig.set("version", this.getDescription().getVersion());
