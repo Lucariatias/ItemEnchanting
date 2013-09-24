@@ -1,4 +1,4 @@
-package me.lucariatias.plugins.itemenchanting;
+package io.github.lucariatias.itemenchanting;
 
 import java.util.Arrays;
 
@@ -40,12 +40,12 @@ public class EnchantItemListener implements Listener {
 				}
 				
 				//Messages
-				String successMessage = plugin.getConfig().getString("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:").replaceAll("%enchanted-item%", event.getItem().getType().toString()).replaceAll("&", "§");
-				String failureMessage = plugin.getConfig().getString("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:").replaceAll("%enchanted-item%", event.getItem().getType().toString()).replaceAll("&", "§");
+				String successMessage = plugin.getConfig().getString("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:").replaceAll("%enchanted-item%", event.getItem().getType().toString()).replaceAll("&", "??");
+				String failureMessage = plugin.getConfig().getString("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:").replaceAll("%enchanted-item%", event.getItem().getType().toString()).replaceAll("&", "??");
 				String[] itemMessages = new String[]{};
 				for (ItemStack itemStack : itemStacks) {
 					itemMessages = Arrays.copyOf(itemMessages, itemMessages.length + 1);
-					itemMessages[itemMessages.length - 1] = plugin.getConfig().getString("messages.item-format", "&9%payment-amount% x %payment-item%").replaceAll("%payment-amount%", Integer.toString(itemStack.getAmount())).replaceAll("%payment-item%", itemStack.getType().toString()).replaceAll("&", "§");
+					itemMessages[itemMessages.length - 1] = plugin.getConfig().getString("messages.item-format", "&9%payment-amount% x %payment-item%").replaceAll("%payment-amount%", Integer.toString(itemStack.getAmount())).replaceAll("%payment-item%", itemStack.getType().toString()).replaceAll("&", "??");
 				}
 				
 				//Item management

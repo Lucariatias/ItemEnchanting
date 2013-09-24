@@ -1,8 +1,8 @@
-name: ItemEnchanting
+name: ${project.name}
 author: Lucariatias
-version: 2.1.3
-main: me.lucariatias.plugins.itemenchanting.ItemEnchanting
-description: Changes enchanting mechanics to use items rather than experience
+version: ${project.version}
+main: io.github.lucariatias.itemenchanting.ItemEnchanting
+description: ${project.description}
 commands:
     itemenchant:
         description: Enchants the item in your hand using items

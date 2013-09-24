@@ -1,4 +1,4 @@
-package me.lucariatias.plugins.itemenchanting;
+package io.github.lucariatias.itemenchanting;
 
 import java.io.IOException;
 
