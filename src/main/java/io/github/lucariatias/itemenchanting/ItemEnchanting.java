@@ -50,7 +50,7 @@ public class ItemEnchanting extends JavaPlugin {
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
-		} else {
+		} else if (!lastUpdateConfig.getString("version").equals(getDescription().getVersion())) {
 			lastUpdateFile.renameTo(new File(lastUpdateFile.getParentFile(), "config-backup.yml"));
 			createConfig();
 			getLogger().warning("It seems you're attempting to downgrade from a future version.");
