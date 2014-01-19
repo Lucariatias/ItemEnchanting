@@ -52,7 +52,7 @@ public class ItemEnchanting extends JavaPlugin {
 			}
 			getLogger().info("It seems you're upgrading from 2.2.0, your config is compatible, and the last-update.yml file has been updated.");
 		} else if (!lastUpdateConfig.getString("version").equals(getDescription().getVersion())) {
-			lastUpdateFile.renameTo(new File(lastUpdateFile.getParentFile(), "config-backup.yml"));
+			new File(getDataFolder(), "config.yml").renameTo(new File(lastUpdateFile.getParentFile(), "config-backup.yml"));
 			createConfig();
 			getLogger().warning("It seems you're attempting to downgrade from a future version.");
 			getLogger().warning("We've backed up you're config to config-backup.yml and wiped the config, in case of any future changes that might break the plugin.");
