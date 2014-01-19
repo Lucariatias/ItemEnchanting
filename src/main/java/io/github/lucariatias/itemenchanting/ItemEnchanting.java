@@ -17,48 +17,61 @@ import org.mcstats.Metrics.Graph;
 public class ItemEnchanting extends JavaPlugin {
 	
 	public void onEnable() {
-		if (!this.getDataFolder().exists()) {
-			this.createConfig();
+		if (!getDataFolder().exists()) {
+			createConfig();
 		}
 		YamlConfiguration lastUpdateConfig = new YamlConfiguration();
-		File lastUpdateFile = new File(this.getDataFolder().getPath() + File.separator + "last-update.yml");
+		File lastUpdateFile = new File(getDataFolder(), "last-update.yml");
 		if (!lastUpdateFile.exists()) {
 			this.createConfig();
-			lastUpdateConfig.set("version", this.getDescription().getVersion());
+			lastUpdateConfig.set("version", getDescription().getVersion());
 			try {
 				lastUpdateConfig.save(lastUpdateFile);
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
+		} else if (lastUpdateConfig.get("version").equals("2.2.0")) {
+			lastUpdateConfig.set("version", getDescription().getVersion());
+			try {
+				lastUpdateConfig.save(lastUpdateFile);
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			}
+		} else {
+			lastUpdateFile.renameTo(new File(lastUpdateFile.getParentFile(), "config-backup.yml"));
+			createConfig();
+			getLogger().warning("It seems you're attempting to downgrade from a future version.");
+			getLogger().warning("We've backed up you're config to config-backup.yml and wiped the config, in case of any future changes that might break the plugin.");
+			getLogger().warning("You may have to reconfigure the plugin.");
 		}
 		try {
 			Metrics metrics = new Metrics(this);
 			createGraphs(metrics);
 			metrics.start();
 		} catch (IOException exception) {
-			this.getLogger().warning("Failed to submit stats.");
+			getLogger().warning("Failed to submit stats.");
 		}
-		this.getServer().getPluginManager().registerEvents(new EnchantItemListener(this), this);
-		this.getCommand("itemenchant").setExecutor(new ItemEnchantCommand(this));
+		getServer().getPluginManager().registerEvents(new EnchantItemListener(this), this);
+		getCommand("itemenchant").setExecutor(new ItemEnchantCommand(this));
 	}
 	
 	public void createConfig() {
-		this.getDataFolder().delete();
-		this.getConfig().set("enchantment-table.mode", "flat-rate");
+		new File(getDataFolder(), "config.yml").delete();
+		getConfig().set("enchantment-table.mode", "flat-rate");
 		List<ItemStack> tableItems = new ArrayList<ItemStack>();
 		tableItems.add(new ItemStack(Material.EMERALD, 3));
 		tableItems.add(new ItemStack(Material.DIAMOND, 1));
-		this.getConfig().set("enchantment-table.items", tableItems);
-		this.getConfig().set("enchantment-command.mode", "multiply");
+		getConfig().set("enchantment-table.items", tableItems);
+		getConfig().set("enchantment-command.mode", "multiply");
 		List<ItemStack> commandItems = new ArrayList<ItemStack>();
 		commandItems.add(new ItemStack(Material.EMERALD, 5));
 		commandItems.add(new ItemStack(Material.DIAMOND, 3));
-		this.getConfig().set("enchantment-command.items", commandItems);
-		this.getConfig().set("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:");
-		this.getConfig().set("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:");
-		this.getConfig().set("messages.show-items", true);
-		this.getConfig().set("messages.item-format", "&9%payment-amount% x %payment-item%");
-		this.saveConfig();
+		getConfig().set("enchantment-command.items", commandItems);
+		getConfig().set("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:");
+		getConfig().set("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:");
+		getConfig().set("messages.show-items", true);
+		getConfig().set("messages.item-format", "&9%payment-amount% x %payment-item%");
+		saveConfig();
 	}
 	
 	@SuppressWarnings("unchecked")
