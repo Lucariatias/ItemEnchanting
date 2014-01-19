@@ -30,7 +30,7 @@ public class ItemEnchanting extends JavaPlugin {
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
-		} else if (lastUpdateConfig.get("version").equals("2.2.0")) {
+		} else if (lastUpdateConfig.getString("version").equals("2.2.0")) {
 			lastUpdateConfig.set("version", getDescription().getVersion());
 			try {
 				lastUpdateConfig.save(lastUpdateFile);
