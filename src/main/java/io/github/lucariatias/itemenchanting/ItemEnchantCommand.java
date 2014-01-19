@@ -41,11 +41,11 @@ public class ItemEnchantCommand implements CommandExecutor {
 						}
 						
 						//Messages
-						String successMessage = plugin.getConfig().getString("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:").replace("%enchanted-item%", player.getItemInHand().getType().toString()).replace('&', ChatColor.COLOR_CHAR);
-						String failureMessage = plugin.getConfig().getString("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:").replace("%enchanted-item%", player.getItemInHand().getType().toString()).replace('&', ChatColor.COLOR_CHAR);
+						String successMessage = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.success", "&aSuccessfully enchanted &9%enchanted-item% &ausing:").replace("%enchanted-item%", player.getItemInHand().getType().toString()));
+						String failureMessage = ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.failure", "&cFailed to enchant &9%enchanted-item%&c, it requires:").replace("%enchanted-item%", player.getItemInHand().getType().toString()));
 						List<String> itemMessages = new ArrayList<String>();
 						for (ItemStack item : items) {
-							itemMessages.add(plugin.getConfig().getString("messages.item-format", "&9%payment-amount% x %payment-item%").replace("%payment-amount%", Integer.toString(item.getAmount())).replace("%payment-item%", item.getType().toString()).replace('&', ChatColor.COLOR_CHAR));
+							itemMessages.add(ChatColor.translateAlternateColorCodes('&', plugin.getConfig().getString("messages.item-format", "&9%payment-amount% x %payment-item%").replace("%payment-amount%", Integer.toString(item.getAmount())).replace("%payment-item%", item.getType().toString())));
 						}
 						
 						//Item management
