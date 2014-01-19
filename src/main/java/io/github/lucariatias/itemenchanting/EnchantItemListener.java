@@ -30,7 +30,9 @@ public class EnchantItemListener implements Listener {
 				//Items
 				List<ItemStack> items = new ArrayList<ItemStack>();
 				String mode = plugin.getConfig().getString("enchantment-table.mode", "flat-rate");
-				items = ((List<ItemStack>) plugin.getConfig().getList("enchantment-table.items"));
+				for (ItemStack item : ((List<ItemStack>) plugin.getConfig().getList("enchantment-table.items"))) {
+					items.add(new ItemStack(item));
+				}
 				if (mode.equalsIgnoreCase("multiply")) {
 					for (ItemStack item : items) {
 						item.setAmount(item.getAmount() * event.getExpLevelCost());

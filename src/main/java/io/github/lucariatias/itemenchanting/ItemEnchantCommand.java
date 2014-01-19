@@ -33,7 +33,9 @@ public class ItemEnchantCommand implements CommandExecutor {
 						//Items
 						List<ItemStack> items = new ArrayList<ItemStack>();
 						String mode = plugin.getConfig().getString("enchantment-command.mode", "flat-rate");
-						items = ((List<ItemStack>) plugin.getConfig().getList("enchantment-command.items"));
+						for (ItemStack item : ((List<ItemStack>) plugin.getConfig().getList("enchantment-table.items"))) {
+							items.add(new ItemStack(item));
+						}
 						if (mode.equalsIgnoreCase("multiply")) {
 							for (ItemStack item : items) {
 								item.setAmount(item.getAmount() * level);
