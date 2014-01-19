@@ -1,6 +1,7 @@
 package io.github.lucariatias.itemenchanting;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.bukkit.Material;
+import org.bukkit.configuration.InvalidConfigurationException;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -23,14 +25,25 @@ public class ItemEnchanting extends JavaPlugin {
 		YamlConfiguration lastUpdateConfig = new YamlConfiguration();
 		File lastUpdateFile = new File(getDataFolder(), "last-update.yml");
 		if (!lastUpdateFile.exists()) {
-			this.createConfig();
+			createConfig();
 			lastUpdateConfig.set("version", getDescription().getVersion());
 			try {
 				lastUpdateConfig.save(lastUpdateFile);
 			} catch (IOException exception) {
 				exception.printStackTrace();
 			}
-		} else if (lastUpdateConfig.getString("version").equals("2.2.0")) {
+		} else {
+			try {
+				lastUpdateConfig.load(lastUpdateFile);
+			} catch (FileNotFoundException exception) {
+				exception.printStackTrace();
+			} catch (IOException exception) {
+				exception.printStackTrace();
+			} catch (InvalidConfigurationException exception) {
+				exception.printStackTrace();
+			}
+		}
+		if (lastUpdateConfig.getString("version").equals("2.2.0")) {
 			lastUpdateConfig.set("version", getDescription().getVersion());
 			try {
 				lastUpdateConfig.save(lastUpdateFile);
